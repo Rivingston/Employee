@@ -1,28 +1,22 @@
 package com.example.employeedata.dto;
 
-import jakarta.validation.constraints.*;
+import java.util.Set;
 
-public class CreateEmployeeDTO {
-
-    @NotBlank(message = "empId is mandatory")
+public class GetEmployeeDTO {
     private String empId;
-
-    @NotBlank(message = "Name is mandatory")
-    @Size(min = 2, max = 100, message = "Name must be between 2–100 characters")
     private String name;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
     private String email;
-
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    @NotNull(message = "Department ID is required")
     private Long departmentId;
+    private String departmentName;
 
-    // Getters and settersa
+    private ProfileDTO profile;
+
+    private Set<String> projects;
+
+    // Getters and Setters
+
     public String getEmpId() {
         return empId;
     }
@@ -48,7 +42,7 @@ public class CreateEmployeeDTO {
         return password;
     }
     public void setPassword(String password) {
-        this.password = password;
+        this.password = "********"; // Hide actual password
     }
 
     public Long getDepartmentId() {
@@ -56,5 +50,26 @@ public class CreateEmployeeDTO {
     }
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public ProfileDTO getProfile() {
+        return profile;
+    }
+    public void setProfile(ProfileDTO profile) {
+        this.profile = profile;
+    }
+
+    public Set<String> getProjects() {
+        return projects;
+    }
+    public void setProjects(Set<String> projects) {
+        this.projects = projects;
     }
 }

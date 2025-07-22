@@ -1,5 +1,6 @@
 package com.example.employeedata.model;
-
+import java.util.Set;
+import java.util.HashSet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -8,11 +9,8 @@ import jakarta.validation.constraints.*;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotBlank(message = "empId is mandatory")
-    @Column(unique = true)
+    @Column(name = "emp_id", nullable = false, unique = true)
     private String empId;
 
     @NotBlank(message = "Name is mandatory")
@@ -27,16 +25,40 @@ public class Employee {
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    // Getters and Setters
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
 
-    public Long getId() {
-        return id;
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = @JoinColumn(name = "emp_id"),         // Must match String type
+            inverseJoinColumns = @JoinColumn(name = "project_id") // Long
+    )
+    private Set<Project> projects = new HashSet<>();
+
+
+    public Set<Project> getProjects() {
+        return projects;
     }
 
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
     public String getEmpId() {
         return empId;
     }
-
     public void setEmpId(String empId) {
         this.empId = empId;
     }
@@ -64,4 +86,15 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+
+
 }
